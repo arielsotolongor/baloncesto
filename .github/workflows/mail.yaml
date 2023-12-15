@@ -30,8 +30,7 @@ jobs:
       - name: Prepare test database
         run: |
           mysql -u root < db/baloncesto.sql
-          export DATABASE_HOST="jdbc:mysql://localhost"
-          export DATABASE_PORT="3306"
+          export DATABASE_HOST="jdbc:mysql://localhost:3306"
           export DATABASE_NAME="baloncesto"
           export DATABASE_USER="usuario"
           export DATABASE_PASS="clave"
@@ -47,7 +46,8 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Code quality
-        run: echo "calidad-codigo"
+        run: |
+          mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=admin
 
   deploy:
     needs: qa
