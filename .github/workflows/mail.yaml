@@ -23,14 +23,14 @@ jobs:
  
  qa:
   needs: test
-  runs-on: ubuntu-latest
+  runs-on: self-hosted
   steps:
   - name: calidad-codigo
     run: echo "calidad-codigo"
 
  deploy:
   needs: qa
-  runs-on: ubuntu-latest
+  runs-on: self-hosted
   steps:
   - name: despliegue
     run: echo "despliegue"
