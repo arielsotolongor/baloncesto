@@ -1,36 +1,57 @@
 name: CI
-on: push
+on:
+  push:
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
- build:
-  runs-on: ubuntu-latest
-  steps:
-  - name: descargar repostorio
-    uses: actions/checkout@v3
-  - name: pruebas-unitarias
-    run: mvn test
-  - name: compilar la aplicación sin repetir pruebas
-    run: mvn package -DskipTests=true
+      - name: Unitary tests
+        run: mvn test
 
+      - name: Compile application without repeating tests
+        run: mvn package -DskipTests=true
 
- test:
-  needs: build
-  runs-on: self-hosted
-  steps:
-  - name: pruebas-funcionales
-    run: echo "pruebas-funcionales"
- 
- qa:
-  needs: test
-  runs-on: self-hosted
-  steps:
-  - name: calidad-codigo
-    run: echo "calidad-codigo"
+  test:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
- deploy:
-  needs: qa
-  runs-on: self-hosted
-  steps:
-  - name: despliegue
-    run: echo "despliegue"
+      - name: Install application in Tomcat
+        run: |
+          mvn package -DskipTests=true
+          cp -r target/Baloncesto /usr/local/tomcat/webapps
+
+      - name: Prepare test database
+        run: |
+          mysql -u root < db/baloncesto.sql
+          export DATABASE_HOST="jdbc:mysql://localhost"
+          export DATABASE_PORT="3306"
+          export DATABASE_NAME="baloncesto"
+          export DATABASE_USER="usuario"
+          export DATABASE_PASS="clave"
+          sh /usr/local/tomcat/bin/catalina.sh stop
+          sh /usr/local/tomcat/bin/catalina.sh start
+
+      - name: Perform functional tests
+        run: |
+          mvn failsafe:integration-test failsafe:verify
+
+  qa:
+    needs: test
+    runs-on: self-hosted
+    steps:
+      - name: Code quality
+        run: echo "calidad-codigo"
+
+  deploy:
+    needs: qa
+    runs-on: self-hosted
+    steps:
+      - name: Deployment
+        run: echo "despliegue"
