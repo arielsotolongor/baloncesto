@@ -1,10 +1,14 @@
 import java.sql.*;
+import java.util.logging.Logger;
 
 public class ModeloDatos {
 
     private Connection con;
     private Statement set;
     private ResultSet rs;
+
+    private static final Logger logger = Logger.getLogger(ModeloDatos.class.getName());
+
 
     public void abrirConexion() {
 
@@ -23,9 +27,13 @@ public class ModeloDatos {
 
         } catch (Exception e) {
             // No se ha conectado
-            System.out.println("No se ha podido conectar");
-            System.out.println("El error es: " + e.getMessage());
+            logger.severe("No se ha podido conectar");
+            logGetMessage(e);
         }
+    }
+
+    private void logGetMessage(Exception e){
+        logger.severe("El error es: " + e.getMessage());
     }
 
     public boolean existeJugador(String nombre) {
@@ -45,8 +53,8 @@ public class ModeloDatos {
             set.close();
         } catch (Exception e) {
             // No lee de la tabla
-            System.out.println("No lee de la tabla");
-            System.out.println("El error es: " + e.getMessage());
+            logger.severe("No lee de la tabla");
+            logGetMessage(e);
         }
         return (existe);
     }
@@ -59,9 +67,9 @@ public class ModeloDatos {
             set.close();
         } catch (Exception e) {
             // No modifica la tabla
-            System.out.println("No modifica la tabla");
-            System.out.println("El error es: " + e.getMessage());
-        }
+            logger.severe("No modifica la tabla");
+            logGetMessage(e);
+         }
     }
 
     public void insertarJugador(String nombre) {
@@ -72,16 +80,16 @@ public class ModeloDatos {
             set.close();
         } catch (Exception e) {
             // No inserta en la tabla
-            System.out.println("No inserta en la tabla");
-            System.out.println("El error es: " + e.getMessage());
-        }
+            logger.severe("No inserta en la tabla");
+            logGetMessage(e);
+         }
     }
 
     public void cerrarConexion() {
         try {
             con.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.severe(e.getMessage());
         }
     }
 

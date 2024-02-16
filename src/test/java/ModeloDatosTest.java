@@ -2,10 +2,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ModeloDatosTest {
+ class ModeloDatosTest {
 
     @Test
-    public void testExisteJugador() {
+     void testExisteJugador() {
         System.out.println("Prueba de existeJugador");
         String nombre = "";
         ModeloDatos instance = new ModeloDatos();
