@@ -1,4 +1,8 @@
+import codigo.Jugador;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ModeloDatos {
@@ -32,7 +36,7 @@ public class ModeloDatos {
         }
     }
 
-    private void logGetMessage(Exception e){
+    private void logGetMessage(Exception e) {
         logger.severe("El error es: " + e.getMessage());
     }
 
@@ -69,7 +73,7 @@ public class ModeloDatos {
             // No modifica la tabla
             logger.severe("No modifica la tabla");
             logGetMessage(e);
-         }
+        }
     }
 
     public void insertarJugador(String nombre) {
@@ -82,7 +86,7 @@ public class ModeloDatos {
             // No inserta en la tabla
             logger.severe("No inserta en la tabla");
             logGetMessage(e);
-         }
+        }
     }
 
     public void reiniciarVotos() {
@@ -93,9 +97,26 @@ public class ModeloDatos {
             set.close();
         } catch (Exception e) {
             // No modifica la tabla
-            logger.severe("No modifica la tabla");
+            logger.severe("No reinicio la tabla");
             logGetMessage(e);
         }
+    }
+
+    public List<Jugador> obtenerJugadores() {
+        List<Jugador> jugadores = new ArrayList<>();
+        try {
+            set = con.createStatement();
+            rs = set.executeQuery("SELECT * FROM Jugadores ORDER BY id");
+            while (rs.next()) {
+                jugadores.add(new Jugador(rs.getInt("id"),rs.getString("nombre"), rs.getInt("votos")));
+            }
+            rs.close();
+            set.close();
+        } catch (Exception e) {
+            logger.severe("No cargo todos los jugadores");
+            logGetMessage(e);
+        }
+        return jugadores;
     }
 
     public void cerrarConexion() {
