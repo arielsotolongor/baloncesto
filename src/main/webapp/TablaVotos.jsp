@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <title>Votaci&oacute;n mejor jugador liga ACB</title>
+        <title>Votación mejor jugador liga ACB</title>
         <link href="estilos.css" rel="stylesheet" type="text/css" />
     </head>
     <body class="resultado">
