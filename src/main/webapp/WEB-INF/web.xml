@@ -5,11 +5,11 @@
          version="4.0">
     <servlet>
         <servlet-name>Acb</servlet-name>
-        <servlet-class>codigo.Acb</servlet-class>
+        <servlet-class>Acb</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Acb</servlet-name>
-        <url-pattern>/codigo.Acb</url-pattern>
+        <url-pattern>/Acb</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

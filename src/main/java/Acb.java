@@ -1,6 +1,8 @@
-package codigo;
+import codigo.Jugador;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -24,7 +26,7 @@ public class Acb extends HttpServlet {
         if (accion != null && accion.equals("Reset")) {
             bd.reiniciarVotos();
             res.sendRedirect(res.encodeRedirectURL("index.html"));
-        } else {
+        } else if (accion != null && accion.equals("Votar")) {
             if (nombre.equals("Otros")) {
                 nombre = req.getParameter("txtOtros");
             }
@@ -36,6 +38,11 @@ public class Acb extends HttpServlet {
             s.setAttribute("nombreCliente", nombreP);
             // Llamada a la página jsp que nos da las gracias
             res.sendRedirect(res.encodeRedirectURL("TablaVotos.jsp"));
+        } else {
+            List<Jugador> jugadoresDB = bd.obtenerJugadores();
+            s.setAttribute("jugadores", (jugadoresDB != null && !jugadoresDB.isEmpty()) ? jugadoresDB : new ArrayList<>());
+            res.sendRedirect(res.encodeRedirectURL("VerVotos.jsp"));
+
         }
     }
 
