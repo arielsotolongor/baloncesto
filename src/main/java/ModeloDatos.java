@@ -106,9 +106,9 @@ public class ModeloDatos {
         List<Jugador> jugadores = new ArrayList<>();
         try {
             set = con.createStatement();
-            rs = set.executeQuery("SELECT * FROM jugadores ORDER BY votos DESC");
+            rs = set.executeQuery("SELECT * FROM Jugadores ORDER BY id");
             while (rs.next()) {
-                jugadores.add(new Jugador(rs.getString("nombre"), rs.getInt("votos")));
+                jugadores.add(new Jugador(rs.getInt("id"),rs.getString("nombre"), rs.getInt("votos")));
             }
             rs.close();
             set.close();
