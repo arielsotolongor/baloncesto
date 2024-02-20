@@ -1,3 +1,5 @@
+package codigo;
+
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -93,7 +95,7 @@ public class ModeloDatos {
             set.close();
         } catch (Exception e) {
             // No modifica la tabla
-            logger.severe("No modifica la tabla");
+            logger.severe("No reinicio la tabla");
             logGetMessage(e);
         }
     }
