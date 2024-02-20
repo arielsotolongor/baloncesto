@@ -2,7 +2,19 @@ body {
     color: white;
     background-color: darkblue;
 }
-   .resultado {
+
+.resultado {
     color: yellow;
     background-color: darkred;
+}
+
+p {
+    text-align: left;
+}
+
+.titulo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
 }
