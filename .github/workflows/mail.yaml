@@ -29,12 +29,12 @@ jobs:
 
       - name: Prepare test database
         run: |
-          mysql -u root < db/baloncesto.sql
-          export DATABASE_HOST="jdbc:mysql://localhost:3306"
-          export DATABASE_NAME="baloncesto"
-          export DATABASE_USER="usuario"
-          export DATABASE_PASS="clave"
-          sh /usr/local/tomcat/bin/catalina.sh stop
+          mysql -u root < db/baloncesto.sql &&
+          export DATABASE_HOST="jdbc:mysql://localhost:3306" &&
+          export DATABASE_NAME="baloncesto" &&
+          export DATABASE_USER="usuario" &&
+          export DATABASE_PASS="clave" &&
+          sh /usr/local/tomcat/bin/catalina.sh stop &&
           sh /usr/local/tomcat/bin/catalina.sh start
 
       - name: Perform functional tests
