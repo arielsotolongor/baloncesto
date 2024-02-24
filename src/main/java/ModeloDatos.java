@@ -13,6 +13,9 @@ public class ModeloDatos {
 
     private static final Logger logger = Logger.getLogger(ModeloDatos.class.getName());
 
+    public void setConMock(Connection mockConnection){
+        con = mockConnection;
+    }
 
     public void abrirConexion() {
 
