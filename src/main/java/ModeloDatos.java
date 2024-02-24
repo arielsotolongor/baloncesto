@@ -13,6 +13,9 @@ public class ModeloDatos {
 
     private static final Logger logger = Logger.getLogger(ModeloDatos.class.getName());
 
+    public void setConMock(Connection mockConnection){
+        con = mockConnection;
+    }
 
     public void abrirConexion() {
 
@@ -108,7 +111,7 @@ public class ModeloDatos {
             set = con.createStatement();
             rs = set.executeQuery("SELECT * FROM Jugadores ORDER BY id");
             while (rs.next()) {
-                jugadores.add(new Jugador(rs.getInt("id"),rs.getString("nombre"), rs.getInt("votos")));
+                jugadores.add(new Jugador(rs.getInt("id"), rs.getString("nombre"), rs.getInt("votos")));
             }
             rs.close();
             set.close();
