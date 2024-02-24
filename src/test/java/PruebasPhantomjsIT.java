@@ -12,12 +12,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.logging.Logger;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PruebasPhantomjsIT {
     private WebDriver driver;
     private WebDriverWait wait;
+
+    private static final Logger logger = Logger.getLogger(ModeloDatos.class.getName());
 
     @BeforeEach
     public void initConf() {
@@ -29,8 +33,6 @@ class PruebasPhantomjsIT {
         wait = new WebDriverWait(driver, 10);
     }
 
-
-
     @Test
     void tituloIndexTest() {
         driver.navigate().to("http://localhost:8080/Baloncesto/");
@@ -40,7 +42,7 @@ class PruebasPhantomjsIT {
     }
 
     @Test
-    @Disabled
+    @Disabled("")
     void votosCeroTest() {
         driver.navigate().to("http://localhost:8080/Baloncesto/");
 
@@ -52,11 +54,46 @@ class PruebasPhantomjsIT {
         List<WebElement> filas = driver.findElements(By.tagName("tr"));
         for (WebElement fila : filas) {
             List<WebElement> columnas = fila.findElements(By.tagName("td"));
-            String nombreJugador = columnas.get(0).getText();
+            String nombre = columnas.get(0).getText();
             String votos = columnas.get(1).getText();
 
-            assertEquals("0", votos, "El jugador " + nombreJugador + " tiene " + votos + " votos");
+            assertEquals("0", votos, "El jugador " + nombre + " tiene " + votos + " votos");
         }
+    }
+
+    @Test
+    void votarNuevoJugadorTest() throws InterruptedException {
+
+        driver.navigate().to("http://localhost:8080/Baloncesto/");
+
+        WebElement nombreInput = driver.findElement(By.name("txtOtros"));
+        nombreInput.sendKeys("Pepe");
+        WebElement otroRadio = driver.findElement(By.id("Otros"));
+        otroRadio.click();
+        WebElement votarButton = driver.findElement(By.name("B1"));
+        votarButton.click();
+        Thread.sleep(2000);
+
+        driver.navigate().to("http://localhost:8080/Baloncesto/");
+        WebElement verVotosButton = driver.findElement(By.name("B3"));
+        verVotosButton.click();
+        Thread.sleep(2000);
+
+        boolean visto = false;
+        List<WebElement> filas = driver.findElements(By.tagName("tr"));
+        for (WebElement fila : filas) {
+            List<WebElement> columnas = fila.findElements(By.tagName("td"));
+            if (!columnas.isEmpty()) {
+                String nombre = columnas.get(0).getText();
+                String votos = columnas.get(1).getText();
+
+                if (nombre.equals("Pepe") && votos.equals("1")) {
+                    visto = true;
+                    break;
+                }
+            }
+        }
+        assertTrue(visto, "El nuevo jugador Pepe no tiene 1 voto");
     }
 
     @AfterEach
