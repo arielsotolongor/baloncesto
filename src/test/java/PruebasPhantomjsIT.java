@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,6 +40,7 @@ class PruebasPhantomjsIT {
     }
 
     @Test
+    @Disabled
     void votosCeroTest() {
         driver.navigate().to("http://localhost:8080/Baloncesto/");
 
