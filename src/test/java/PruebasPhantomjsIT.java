@@ -21,8 +21,6 @@ class PruebasPhantomjsIT {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    private static final Logger logger = Logger.getLogger(ModeloDatos.class.getName());
-
     @BeforeEach
     public void initConf() {
         DesiredCapabilities caps = new DesiredCapabilities();
@@ -42,23 +40,30 @@ class PruebasPhantomjsIT {
     }
 
     @Test
-    @Disabled("")
-    void votosCeroTest() {
+    void votosCeroTest() throws InterruptedException {
         driver.navigate().to("http://localhost:8080/Baloncesto/");
+        WebElement resetButton = driver.findElement(By.name("B2"));
+        resetButton.click();
+        Thread.sleep(3000);
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.name("B2"))).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.name("B3"))).click();
-
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.tagName("tr")));
+        driver.navigate().to("http://localhost:8080/Baloncesto/");
+        WebElement verVotosButton = driver.findElement(By.name("B3"));
+        verVotosButton.click();
+        Thread.sleep(3000);
 
         List<WebElement> filas = driver.findElements(By.tagName("tr"));
+        boolean entro = false;
         for (WebElement fila : filas) {
             List<WebElement> columnas = fila.findElements(By.tagName("td"));
-            String nombre = columnas.get(0).getText();
-            String votos = columnas.get(1).getText();
-
-            assertEquals("0", votos, "El jugador " + nombre + " tiene " + votos + " votos");
+            if (!columnas.isEmpty()) {
+                String nombre = columnas.get(0).getText();
+                String votos = columnas.get(1).getText();
+                entro = true;
+                assertEquals("0", votos, "El jugador " + nombre + " tiene " + votos + " votos");
+            }
         }
+        assertTrue(entro, "No se cargaron los datos de los votos");
+
     }
 
     @Test
